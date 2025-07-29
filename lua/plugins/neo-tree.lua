@@ -8,8 +8,8 @@ return {
   },
   config = function()
     require("neo-tree").setup({
-      close_if_last_window = true,                         -- Закрыть Neo-Tree, если это последнее окно
-      sources = { "filesystem", "buffers", "git_status" }, -- Источники данных
+      close_if_last_window = true,
+      sources = { "filesystem", "buffers", "git_status" },
       default_component_configs = {
         icon = {
           folder_closed = "",
@@ -20,16 +20,16 @@ return {
       window = {
         width = 30,
         mappings = {
-          ["<C-e>"] = "close_window", -- Закрыть окно по <C-e>
+          ["<C-e>"] = "close_window",
         },
       },
       filesystem = {
         filtered_items = {
-          visible = true, -- Показывать скрытые файлы
+          visible = true,
         },
       },
-
-      vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { noremap = true, silent = true })
     })
+
+    vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { noremap = true, silent = true })
   end,
 }
