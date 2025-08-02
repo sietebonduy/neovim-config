@@ -7,16 +7,42 @@ return {
 		"MunifTanjim/nui.nvim",
 	},
 	config = function()
-		require("neo-tree").setup({
+		local neotree = require("neo-tree")
+
+		neotree.setup(vim.tbl_deep_extend("force", neotree.config or {}, {
+			add_blank_line_at_top = false,
+			auto_clean_after_session_restore = true,
 			close_if_last_window = true,
-			sources = { "filesystem", "buffers", "git_status" },
-			default_component_configs = {
-				icon = {
-					folder_closed = "",
-					folder_open = "",
-					folder_empty = "",
-				},
+			default_source = "filesystem",
+			enable_diagnostics = true,
+			enable_git_status = true,
+			enable_modified_markers = true,
+			enable_opened_markers = true,
+			enable_refresh_on_write = true,
+			enable_cursor_hijack = true,
+			git_status_async = true,
+			git_status_async_options = { batch_delay = 100 },
+			hide_root_node = false,
+			nesting_rules = {},
+			retain_hidden_root_indent = false,
+			log_to_file = false,
+			open_files_in_last_window = true,
+			open_files_do_not_replace_types = {},
+			open_files_using_relative_paths = true,
+			popup_border_style = "rounded",
+			resize_timer_interval = 500,
+			sort_case_insensitive = true,
+			use_popups_for_input = true,
+			use_default_mappings = true,
+			source_selector = {
+				winbar = true,
+				statusline = false,
 			},
+			renderers = {},
+			commands = {},
+			buffers = {},
+			git_status = {},
+			document_symbols = {},
 			window = {
 				width = 30,
 				mappings = {
@@ -32,12 +58,27 @@ return {
 			},
 			filesystem = {
 				filtered_items = {
-					visible = true,
+					visible = false,
+					hide_dotfiles = false,
+					hide_gitignored = false,
+					hide_by_name = {
+						".git",
+						".idea",
+						".vscode",
+						".DS_Store",
+					},
+					never_show = {
+						".DS_Store",
+						"thumbs.db",
+					},
 				},
-				follow_current_file = true,
+				follow_current_file = {
+					enabled = true,
+					leave_dirs_open = false,
+				},
 				hijack_netrw_behavior = "open_default",
 			},
-		})
+		}))
 
 		local function toggle_neo_tree()
 			local manager = require("neo-tree.sources.manager")
