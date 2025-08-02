@@ -15,7 +15,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 -- Общие полезные настройки
-opt.mouse = "a"                -- Включаем мышь
+opt.mouse = "a"               -- Включаем мышь
 opt.termguicolors = true      -- Поддержка 24-bit цветов
 opt.cursorline = true         -- Подсветка текущей строки
 opt.wrap = false              -- Не переносить строки
@@ -35,12 +35,12 @@ vim.opt.relativenumber = true -- относительные номера для 
 vim.api.nvim_create_autocmd("SwapExists", {
   pattern = "*",
   callback = function()
-    vim.v.swapchoice = 'd'
+    vim.v.swapchoice = "d"
   end,
 })
 
 -- Auto Save
-vim.api.nvim_create_autocmd({"BufLeave", "FocusLost"}, {
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
   pattern = "*",
   callback = function()
     if vim.bo.modified and not vim.bo.readonly then
