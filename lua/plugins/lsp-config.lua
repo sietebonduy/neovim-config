@@ -1,146 +1,143 @@
 return {
-  {
-    "williamboman/mason.nvim",
-    version = "*",
-    config = function()
-      require("mason").setup()
-    end,
-  },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    version = "*",
-    dependencies = { "williamboman/mason.nvim" },
-    config = function()
-      require("mason-lspconfig").setup({
-        ensure_installed = {
-          "lua_ls",  -- Lua
-          "ts_ls",   -- TypeScript/JavaScript
-          "eslint",  -- ESLint для JS/TS
-          "gopls",   -- Go
-          "solargraph", -- Ruby (в том числе Rails)
-          "jsonls",  -- JSON
-          "html",    -- HTML
-          "cssls",   -- CSS
-          "yamlls",  -- YAML
-          "ruby_lsp", -- Ruby (альтернативный LSP)
-          "dockerls", -- Dockerfile
-          "bashls",  -- Bash
-          "terraformls", -- Terraform
-          "prismals", -- Prisma ORM (TS)
-          "vimls",   -- Vim script
-          "marksman", -- Markdown
-          "sqlls",   -- SQL
-          "intelephense", -- PHP
-        },
-        automatic_installation = true,
-      })
-    end,
-  },
-  {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-    dependencies = { "williamboman/mason.nvim" },
-    config = function()
-      require("mason-tool-installer").setup({
-        ensure_installed = {
-          "lua_ls",
-          "stylua",  -- форматтер Lua
-          "prettier", -- форматтер для JS/TS/HTML/CSS
-          "eslint_d", -- быстрый ESLint
-          "rubocop", -- Ruby форматтер и линтер
-          "goimports", -- Go импорт организатор
-          "solargraph", -- Ruby LSP сервер
-          "terraform-ls", -- Terraform LSP сервер
-          "shellcheck", -- Bash линтер
-          "shfmt",   -- Bash форматтер
-          "hadolint", -- Dockerfile линтер
-          "marksman", -- Markdown LSP
-        },
-      })
-    end,
-  },
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-    },
-    config = function()
-      local lspconfig = require("lspconfig")
+	{
+		"williamboman/mason.nvim",
+		version = "*",
+		config = function()
+			require("mason").setup()
+		end,
+		desc = "UI for managing LSP, DAP, linters, and formatters",
+	},
+	{
+		"williamboman/mason-lspconfig.nvim",
+		version = "*",
+		dependencies = {
+			{
+				"williamboman/mason.nvim",
+				desc = "Backend for installing LSP and other tools",
+			},
+		},
+		config = function()
+			require("mason-lspconfig").setup({
+				ensure_installed = {
+					"lua_ls", -- Lua
+					"ts_ls", -- TypeScript/JavaScript
+					"eslint", -- JS/TS linter
+					"gopls", -- Go
+					"solargraph", -- Ruby
+					"jsonls", -- JSON
+					"html", -- HTML
+					"cssls", -- CSS
+					"yamlls", -- YAML
+					"ruby_lsp", -- Alternative Ruby LSP
+					"dockerls", -- Dockerfile
+					"bashls", -- Bash
+					"terraformls", -- Terraform
+					"prismals", -- Prisma
+					"vimls", -- Vimscript
+					"marksman", -- Markdown
+					"sqlls", -- SQL
+					"intelephense", -- PHP
+				},
+				automatic_installation = true,
+			})
+		end,
+		desc = "Auto install and configure LSP servers via mason",
+	},
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		dependencies = {
+			{
+				"williamboman/mason.nvim",
+				desc = "Installer manager for LSP/format/lint tools",
+			},
+		},
+		config = function()
+			require("mason-tool-installer").setup({
+				ensure_installed = {
+					"lua_ls",
+					"stylua", -- Lua formatter
+					"prettier", -- JS/TS/HTML/CSS formatter
+					"eslint_d", -- Fast JS/TS linter
+					"rubocop", -- Ruby linter/formatter
+					"goimports", -- Go import organizer
+					"solargraph", -- Ruby LSP
+					"terraform-ls", -- Terraform LSP
+					"shellcheck", -- Bash linter
+					"shfmt", -- Bash formatter
+					"hadolint", -- Dockerfile linter
+					"marksman", -- Markdown
+				},
+			})
+		end,
+		desc = "Automatic install of external CLI tools via mason",
+	},
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			{
+				"williamboman/mason.nvim",
+				desc = "Manager for LSP and other dev tools",
+			},
+			{
+				"williamboman/mason-lspconfig.nvim",
+				desc = "Bridge between mason and lspconfig",
+			},
+		},
+		config = function()
+			local lspconfig = require("lspconfig")
 
-      local on_attach = function(client, bufnr)
-        local bufopts = { noremap = true, silent = true, buffer = bufnr }
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts)
-        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, bufopts)
-        vim.keymap.set("n", "<leader>f", function()
-          vim.lsp.buf.format({ async = true })
-        end, bufopts)
-      end
+			local on_attach = function(client, bufnr)
+				local bufopts = { noremap = true, silent = true, buffer = bufnr }
+				vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation", unpack(bufopts) })
+				vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition", unpack(bufopts) })
+				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol", unpack(bufopts) })
+				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions", unpack(bufopts) })
+				vim.keymap.set("n", "<leader>f", function()
+					vim.lsp.buf.format({ async = true })
+				end, { desc = "Format buffer", unpack(bufopts) })
 
-      -- Lua
-      lspconfig.lua_ls.setup({
-        on_attach = on_attach,
-        settings = {
-          Lua = {
-            runtime = { version = "LuaJIT" },
-            diagnostics = { globals = { "vim", "require" } },
-            workspace = { library = vim.api.nvim_get_runtime_file("", true) },
-            telemetry = { enable = false },
-          },
-        },
-      })
+				-- Register which-key descriptions (optional, if using which-key.nvim)
+				local wk = require("which-key")
+				wk.register({
+					["<leader>rn"] = "Rename symbol",
+					["<leader>ca"] = "Code actions",
+					["<leader>f"] = "Format buffer",
+					["gd"] = "Go to definition",
+					["K"] = "Hover documentation",
+				}, { buffer = bufnr })
+			end
 
-      -- TypeScript/JavaScript
-      lspconfig.ts_ls.setup({ on_attach = on_attach })
+			-- Setup servers
+			lspconfig.lua_ls.setup({
+				on_attach = on_attach,
+				settings = {
+					Lua = {
+						runtime = { version = "LuaJIT" },
+						diagnostics = { globals = { "vim", "require" } },
+						workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+						telemetry = { enable = false },
+					},
+				},
+			})
 
-      -- ESLint (для diagnostics)
-      lspconfig.eslint.setup({ on_attach = on_attach })
-
-      -- Go
-      lspconfig.gopls.setup({ on_attach = on_attach })
-
-      -- Ruby (Solargraph)
-      lspconfig.solargraph.setup({ on_attach = on_attach })
-
-      -- Ruby (alternative ruby-lsp)
-      lspconfig.ruby_lsp.setup({ on_attach = on_attach })
-
-      -- JSON
-      lspconfig.jsonls.setup({ on_attach = on_attach })
-
-      -- HTML
-      lspconfig.html.setup({ on_attach = on_attach })
-
-      -- CSS
-      lspconfig.cssls.setup({ on_attach = on_attach })
-
-      -- YAML
-      lspconfig.yamlls.setup({ on_attach = on_attach })
-
-      -- Dockerfile
-      lspconfig.dockerls.setup({ on_attach = on_attach })
-
-      -- Bash
-      lspconfig.bashls.setup({ on_attach = on_attach })
-
-      -- Terraform
-      lspconfig.terraformls.setup({ on_attach = on_attach })
-
-      -- Prisma
-      lspconfig.prismals.setup({ on_attach = on_attach })
-
-      -- Vim script
-      lspconfig.vimls.setup({ on_attach = on_attach })
-
-      -- Markdown
-      lspconfig.marksman.setup({ on_attach = on_attach })
-
-      -- SQL
-      lspconfig.sqlls.setup({ on_attach = on_attach })
-
-      -- PHP
-      lspconfig.intelephense.setup({ on_attach = on_attach })
-    end,
-  },
+			lspconfig.ts_ls.setup({ on_attach = on_attach })
+			lspconfig.eslint.setup({ on_attach = on_attach })
+			lspconfig.gopls.setup({ on_attach = on_attach })
+			lspconfig.solargraph.setup({ on_attach = on_attach })
+			lspconfig.ruby_lsp.setup({ on_attach = on_attach })
+			lspconfig.jsonls.setup({ on_attach = on_attach })
+			lspconfig.html.setup({ on_attach = on_attach })
+			lspconfig.cssls.setup({ on_attach = on_attach })
+			lspconfig.yamlls.setup({ on_attach = on_attach })
+			lspconfig.dockerls.setup({ on_attach = on_attach })
+			lspconfig.bashls.setup({ on_attach = on_attach })
+			lspconfig.terraformls.setup({ on_attach = on_attach })
+			lspconfig.prismals.setup({ on_attach = on_attach })
+			lspconfig.vimls.setup({ on_attach = on_attach })
+			lspconfig.marksman.setup({ on_attach = on_attach })
+			lspconfig.sqlls.setup({ on_attach = on_attach })
+			lspconfig.intelephense.setup({ on_attach = on_attach })
+		end,
+		desc = "Configure and connect LSP servers via lspconfig",
+	},
 }

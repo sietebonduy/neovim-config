@@ -55,6 +55,11 @@ return {
 			end
 		end
 
-		vim.keymap.set("n", "<leader>e", toggle_neo_tree, { noremap = true, silent = true })
+		vim.keymap.set(
+			"n",
+			"<leader>e",
+			toggle_neo_tree,
+			{ noremap = true, silent = true, desc = "Toggle Neo-tree file explorer" }
+		)
 	end,
 }
