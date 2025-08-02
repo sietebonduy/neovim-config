@@ -14,7 +14,7 @@ return {
         null_ls.builtins.formatting.goimports,
 
         null_ls.builtins.diagnostics.rubocop,
-        null_ls.builtins.diagnostics.eslint_d,
+        -- null_ls.builtins.diagnostics.eslint_d,
         null_ls.builtins.diagnostics.golangci_lint,
       },
 
