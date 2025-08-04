@@ -83,17 +83,20 @@ return {
 		local function toggle_neo_tree()
 			local manager = require("neo-tree.sources.manager")
 			local state = manager.get_state("filesystem")
+			local current_win = vim.api.nvim_get_current_win()
 
-			if state and state.winid and vim.api.nvim_win_is_valid(state.winid) then
-				local current_win = vim.api.nvim_get_current_win()
-				if current_win == state.winid then
-					vim.cmd("Neotree close")
-				else
-					vim.api.nvim_set_current_win(state.winid)
+			if state and state.winid then
+				if vim.api.nvim_win_is_valid(state.winid) then
+					if current_win == state.winid then
+						vim.cmd("Neotree close")
+					else
+						vim.api.nvim_set_current_win(state.winid)
+					end
+					return
 				end
-			else
-				vim.cmd("Neotree toggle")
 			end
+
+			vim.cmd("Neotree toggle")
 		end
 
 		vim.keymap.set(
@@ -102,5 +105,21 @@ return {
 			toggle_neo_tree,
 			{ noremap = true, silent = true, desc = "Toggle Neo-tree file explorer" }
 		)
+
+		local sources = { "filesystem", "buffers", "git_status" }
+		local current_source = 1
+
+		vim.keymap.set("n", "<Tab>", function()
+			local win = vim.api.nvim_get_current_win()
+			local buf = vim.api.nvim_win_get_buf(win)
+			local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+
+			if ft == "neo-tree" then
+				current_source = current_source % #sources + 1
+				vim.cmd("Neotree " .. sources[current_source] .. " reveal left")
+			else
+				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
+			end
+		end, { noremap = true, silent = true })
 	end,
 }
