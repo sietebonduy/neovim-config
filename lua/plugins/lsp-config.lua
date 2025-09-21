@@ -101,7 +101,7 @@ return {
         wk.register({
           ["<leader>rn"] = "Rename symbol",
           ["<leader>ca"] = "Code actions",
-          ["<leader>f"] = "Format buffer",
+          ["<leader>f9"] = "Format buffer",
           ["gd"] = "Go to definition",
           ["K"] = "Hover documentation",
         }, { buffer = bufnr })
