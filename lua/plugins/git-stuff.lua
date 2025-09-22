@@ -68,7 +68,7 @@ return {
 
       -- Хоткеи для быстрого доступа
       vim.keymap.set("n", "<leader>gs", "<cmd>Neogit<CR>", { desc = "Open Neogit" })
-      vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<CR>", { desc = "Open Diffview" })
+      vim.keymap.set("n", "<leader>df", "<cmd>DiffviewOpen<CR>", { desc = "Open Diffview" })
       vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory<CR>", { desc = "File history" })
       vim.keymap.set("n", "<leader>gb", "<cmd>Git blame<CR>", { desc = "Blame current line" })
     end,
