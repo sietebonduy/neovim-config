@@ -23,7 +23,6 @@ return {
             vim.keymap.set(mode, l, r, opts)
           end
 
-          -- Навигация по изменениям
           map("n", "]c", function()
             if vim.wo.diff then return "]c" end
             vim.schedule(function() gs.next_hunk() end)
@@ -36,7 +35,6 @@ return {
             return "<Ignore>"
           end, { expr = true })
 
-          -- Stage / reset
           map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage hunk" })
           map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset hunk" })
           map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview hunk" })
@@ -66,7 +64,6 @@ return {
         },
       })
 
-      -- Хоткеи для быстрого доступа
       vim.keymap.set("n", "<leader>gs", "<cmd>Neogit<CR>", { desc = "Open Neogit" })
       vim.keymap.set("n", "<leader>df", "<cmd>DiffviewOpen<CR>", { desc = "Open Diffview" })
       vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory<CR>", { desc = "File history" })

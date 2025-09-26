@@ -15,7 +15,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 -- Общие полезные настройки
-opt.mouse = "a"               -- Включаем мышь
+-- opt.mouse = "a"               -- Включаем мышь
 opt.termguicolors = true      -- Поддержка 24-bit цветов
 opt.cursorline = true         -- Подсветка текущей строки
 opt.wrap = false              -- Не переносить строки
@@ -48,3 +48,22 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
     end
   end,
 })
+
+
+-- Normal
+vim.keymap.set('n', '<Up>', '<Nop>')
+vim.keymap.set('n', '<Down>', '<Nop>')
+vim.keymap.set('n', '<Left>', '<Nop>')
+vim.keymap.set('n', '<Right>', '<Nop>')
+
+-- Insert
+-- vim.keymap.set('i', '<Up>', '<Nop>')
+-- vim.keymap.set('i', '<Down>', '<Nop>')
+-- vim.keymap.set('i', '<Left>', '<Nop>')
+-- vim.keymap.set('i', '<Right>', '<Nop>')
+
+-- Visual
+vim.keymap.set('v', '<Up>', '<Nop>')
+vim.keymap.set('v', '<Down>', '<Nop>')
+vim.keymap.set('v', '<Left>', '<Nop>')
+vim.keymap.set('v', '<Right>', '<Nop>')
